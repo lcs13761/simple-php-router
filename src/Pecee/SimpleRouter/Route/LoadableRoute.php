@@ -48,9 +48,9 @@ abstract class LoadableRoute extends Route implements ILoadableRoute
 
             $className = get_class($middleware);
 
-            $router->debug('Loading middleware "%s"', [$className]);
+            $router->debug('Loading middleware "%s"', $className);
             $middleware->handle($request);
-            $router->debug('Finished loading middleware "%s"', [$className]);
+            $router->debug('Finished loading middleware "%s"', $className);
         }
 
         $router->debug('Finished loading middlewares');

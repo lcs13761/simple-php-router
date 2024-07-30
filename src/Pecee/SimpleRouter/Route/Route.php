@@ -61,7 +61,7 @@ abstract class Route implements IRoute
      */
     public function renderRoute(Request $request, Router $router): ?string
     {
-        $router->debug('Starting rendering route "%s"', [get_class($this)]);
+        $router->debug('Starting rendering route "%s"', get_class($this));
 
         $callback = $this->getCallback();
 
@@ -98,7 +98,7 @@ abstract class Route implements IRoute
         $namespace = $this->getNamespace();
         $className = ($namespace !== null && $controller[0] !== '\\') ? $namespace . '\\' . $controller : $controller;
 
-        $router->debug('Loading class %s', [$className]);
+        $router->debug('Loading class %s', $className);
         $class = $router->getClassLoader()->loadClass($className);
 
         if ($method === null) {
@@ -109,7 +109,7 @@ abstract class Route implements IRoute
             throw new ClassNotFoundHttpException($className, $method, sprintf('Method "%s" does not exist in class "%s"', $method, $className), 404, null);
         }
 
-        $router->debug('Executing callback %s -> %s', [$className, $method]);
+        $router->debug('Executing callback %s -> %s', $className, $method);
 
         return $router->getClassLoader()->loadClassMethod($class, $method, $parameters);
     }

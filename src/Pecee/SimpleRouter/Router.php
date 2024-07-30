@@ -227,7 +227,7 @@ class Router
         // Loop through each route-request
         foreach ($routes as $route) {
 
-            $this->debug('Processing route "%s"', [get_class($route)]);
+            $this->debug('Processing route "%s"', get_class($route));
 
             if ($group !== null) {
                 /* Add the parent group */
@@ -302,7 +302,7 @@ class Router
         foreach ($this->bootManagers as $manager) {
 
             $className = get_class($manager);
-            $this->debug('Rendering bootmanager "%s"', [$className]);
+            $this->debug('Rendering bootmanager "%s"', $className);
             $this->fireEvents(EventHandler::EVENT_RENDER_BOOTMANAGER, [
                 'bootmanagers' => $this->bootManagers,
                 'bootmanager' => $manager,
@@ -311,7 +311,7 @@ class Router
             /* Render bootmanager */
             $manager->boot($this, $this->request);
 
-            $this->debug('Finished rendering bootmanager "%s"', [$className]);
+            $this->debug('Finished rendering bootmanager "%s"', $className);
         }
 
         $this->debug('Finished loading routes');
@@ -377,7 +377,7 @@ class Router
             /* @var $route ILoadableRoute */
             foreach ($this->processedRoutes as $key => $route) {
 
-                $this->debug('Matching route "%s"', [get_class($route)]);
+                $this->debug('Matching route "%s"', get_class($route));
 
                 /* Add current processing route to constants */
                 $this->currentProcessingRoute = $route;
@@ -391,7 +391,7 @@ class Router
 
                     /* Check if request method matches */
                     if (count($route->getRequestMethods()) !== 0 && in_array($this->request->getMethod(), $route->getRequestMethods(), true) === false) {
-                        $this->debug('Method "%s" not allowed', [$this->request->getMethod()]);
+                        $this->debug('Method "%s" not allowed', $this->request->getMethod());
 
                         // Only set method not allowed is not already set
                         if ($methodNotAllowed === null) {
@@ -515,7 +515,7 @@ class Router
      */
     protected function handleException(Exception $e): ?string
     {
-        $this->debug('Starting exception handling for "%s"', [get_class($e)]);
+        $this->debug('Starting exception handling for "%s"', get_class($e));
 
         $this->fireEvents(EventHandler::EVENT_LOAD_EXCEPTIONS, [
             'exception' => $e,
@@ -535,7 +535,7 @@ class Router
                 'exceptionHandlers' => $this->exceptionHandlers,
             ]);
 
-            $this->debug('Processing exception-handler "%s"', [get_class($handler)]);
+            $this->debug('Processing exception-handler "%s"', get_class($handler));
 
             if (($handler instanceof IExceptionHandler) === false) {
                 throw new HttpException('Exception handler must implement the IExceptionHandler interface.', 500);
@@ -583,7 +583,7 @@ class Router
      */
     public function findRoute(string $name): ?ILoadableRoute
     {
-        $this->debug('Finding route by name "%s"', [$name]);
+        $this->debug('Finding route by name "%s"', $name);
 
         $this->fireEvents(EventHandler::EVENT_FIND_ROUTE, [
             'name' => $name,
@@ -593,14 +593,14 @@ class Router
 
             /* Check if the name matches with a name on the route. Should match either router alias or controller alias. */
             if ($route->hasName($name) === true) {
-                $this->debug('Found route "%s" by name "%s"', [$route->getUrl(), $name]);
+                $this->debug('Found route "%s" by name "%s"', $route->getUrl(), $name);
 
                 return $route;
             }
 
             /* Direct match to controller */
             if ($route instanceof IControllerRoute && strtoupper($route->getController()) === strtoupper($name)) {
-                $this->debug('Found route "%s" by controller "%s"', [$route->getUrl(), $name]);
+                $this->debug('Found route "%s" by controller "%s"', $route->getUrl(), $name);
 
                 return $route;
             }
@@ -610,7 +610,7 @@ class Router
                 [$controller, $method] = array_map('strtolower', explode('@', $name));
 
                 if ($controller === strtolower((string)$route->getClass()) && $method === strtolower((string)$route->getMethod())) {
-                    $this->debug('Found route "%s" by controller "%s" and method "%s"', [$route->getUrl(), $controller, $method]);
+                    $this->debug('Found route "%s" by controller "%s" and method "%s"', $route->getUrl(), $controller, $method);
 
                     return $route;
                 }
@@ -622,14 +622,14 @@ class Router
 
                 /* Check if the entire callback is matching */
                 if (str_starts_with($callback, $name) || strtolower($callback) === strtolower($name)) {
-                    $this->debug('Found route "%s" by callback "%s"', [$route->getUrl(), $name]);
+                    $this->debug('Found route "%s" by callback "%s"', $route->getUrl(), $name);
 
                     return $route;
                 }
 
                 /* Check if the class part of the callback matches (class@method) */
                 if (strtolower($name) === strtolower($route->getClass())) {
-                    $this->debug('Found route "%s" by class "%s"', [$route->getUrl(), $name]);
+                    $this->debug('Found route "%s" by class "%s"', $route->getUrl(), $name);
 
                     return $route;
                 }
@@ -884,9 +884,9 @@ class Router
     /**
      * Add a new debug message
      * @param string $message
-     * @param array ...$args
+     * @param mixed ...$args
      */
-    public function debug(string $message, array ...$args): void
+    public function debug(string $message, mixed ...$args): void
     {
         if ($this->debugEnabled === false) {
             return;

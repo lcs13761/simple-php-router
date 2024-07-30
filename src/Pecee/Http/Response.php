@@ -2,7 +2,6 @@
 
 namespace Pecee\Http;
 
-use JetBrains\PhpStorm\NoReturn;
 use JsonSerializable;
 use Pecee\Exceptions\InvalidArgumentException;
 
