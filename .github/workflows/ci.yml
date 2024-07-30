@@ -1,5 +1,5 @@
 name: CI
-
+run-name: ${{ github.actor }} is testing Package
 on: [push, pull_request]
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
           - ubuntu-latest
           - windows-latest
         php-version:
-          - 8.3
+          - 8.2
         phpunit-version:
           - 8.5.32
         dependencies:
